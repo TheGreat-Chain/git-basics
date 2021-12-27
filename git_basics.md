@@ -146,9 +146,70 @@ Collaborating with Git involves knowing **remote repositories** management. It m
 
 - `git remote -v` : Shows the short name and the URL of the remote servers configured.
 - `git remote add [short name] [URL]` : Adds a new remote called [short name]. You’ll refer to this project with the short name and not with the URL.
-- `git fetch [remote]` : Get data from the remote.
+- `git fetch [remote]` : Gets data from the remote.
+- `git pulll [remote]` : Gets data from the remote AND merges with local branches
 - `git remote show [remote]` : Shows information about the the remote, mainly about branches.
 - `git push [remote] [branch]` : Push your commits on the remote repository.
 - `git remote remove [short name]` : Remove a remote.
 
 # 8 - Branching
+
+## What is a branch ?
+
+When you make a commit it creates an identifier and a link to the previous commit. A succession of links is called a branch.
+
+Even if you never use the `git branch` command, all your commits are done on a branch. By default, this branch is called **master.** 
+
+## The master branch
+
+Use `git log --all` to see your commits. 
+You’ll obtain something like that :
+
+```
+commit 73263f6936859609f54bdac3bd5f2d7c187bbf65 (HEAD -> master)
+Author: Login <example@email.com>
+Date:   Mon Jan 1 00:00:00 2021 +0100
+
+    version 1.0
+
+commit c83be1422135f463a82e3a87fedf7bc2b771c819
+Author: Login <example@email.com>
+Date:   Mon Jan 1 00:00:00 2021 +0100
+
+    version 2.0
+```
+
+- The strange string after “commit” is its identifier, created with the SHA-1 hashing function.
+- On the very first commit (bottom), you do not see any branch information
+- On the one above, you can see *“(HEAD → master)”.*
+
+This is important : 
+
+**HEAD** is ****the pointer that indicates on which branch you currently are. In this example, Git considers you currently are on the master branch, the one created and named by default.
+
+## Create your own branches
+
+Use `git branch [branch name]`. 
+
+If you do `git log --all` or (`git log --all --oneline` for more clarity) again :
+
+```
+commit 73263f6936859609f54bdac3bd5f2d7c187bbf65 (HEAD -> master, branch)
+```
+
+You see that there are now two branches : “master” and “branch” (I called it branch). 
+However, you are still on the master branch. 
+
+To move on the other branch, use `git checkout [branch]`. You’ll see the HEAD pointer moving. 
+
+From that point, every commit you’ll make will be only on the branch where the HEAD is pointing. Of course you can move to any branch whenever you want. 
+
+Also, your working directory will only show the files attached to the branch you currently are on. 
+
+## Merge branches
+
+1. Go on the branch you want to keep with `git checkout [branch]`.
+2. Do `git merge [branch]` where [branch] is the branch on which you did some work.
+3. Delete the branch mentioned in the 2. step with `git branch -d [branch]` because it is no longer useful.
+4. Most of the time, same part of same files will be different on two branches because of the modification you did. It is called a conflict. The merging is paused until you resolve the conflict. 
+⇒ Use `git status` to help you during this process.
